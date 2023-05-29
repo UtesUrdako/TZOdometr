@@ -1,6 +1,7 @@
 using Connect;
 using Sources;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -43,7 +44,7 @@ namespace Odometr
 
             Connect();
 
-            //videoLoader.Initialize(audioManager, OnCheckSound);
+            videoLoader.Initialize(audioManager, OnCheckSound);
         }
 
         private void Connect()
@@ -63,13 +64,11 @@ namespace Odometr
                 case "randomStatus":
                     if (result.GetStatus())
                     {
-                        Debug.Log(result.GetStatus());
                         mainWindow.SetConnect(true);
                         mainWindow.SetOdometerRawValue(result.GetValue());
                     }
                     else
                     {
-                        Debug.Log(result.GetStatus());
                         mainWindow.SetConnect(false);
                         connect.WsCall("{\"operation\": \"getRandomStatus\"}");
                     }
@@ -138,11 +137,9 @@ namespace Odometr
             StartCoroutine(EmulateOdometer());
         }
 
-        private IEnumerator DelayToConnect()
+        private void OnDestroy()
         {
-            Debug.Log("Repeat connect");
-            yield return new WaitForSeconds(1f);
-            connect.WsCall("{\"operation\": \"getRandomStatus\"}");
+            connect.Destroy();
         }
     }
 }

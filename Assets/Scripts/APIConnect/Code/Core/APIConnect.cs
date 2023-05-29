@@ -13,6 +13,12 @@ namespace Connect
             webSocket.OnMessage += WsCallback;
             webSocket.Connect();
         }
+
+        public void Destroy()
+        {
+            webSocket.Close();
+        }
+
         public void WsCall(string data)
         {
             webSocket.Send(data);
